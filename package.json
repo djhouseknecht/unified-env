@@ -9,7 +9,8 @@
     "test:watch": "jest --watch --collectCoverage=false",
     "lint": "tslint --project . --config tslint.json",
     "semantic-release": "semantic-release",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "codecov": "codecov"
   },
   "dependencies": {},
   "devDependencies": {
