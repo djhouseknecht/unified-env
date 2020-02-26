@@ -77,7 +77,7 @@ export function parseEnvFile (this: SimpleEnv<any, any>, fileOptions: IFileOptio
       let value = (keyValueMatch[2] || '');
       const end = value.length - 1;
       const isDoubleQuoted = value[0] === '"' && value[end] === '"';
-      const isSingleQuoted = value[0] === "'" && value[end] === "'";
+      const isSingleQuoted = value[0] === '\'' && value[end] === '\'';
 
       // if single or double quoted, remove quotes
       if (isSingleQuoted || isDoubleQuoted) {
@@ -94,7 +94,7 @@ export function parseEnvFile (this: SimpleEnv<any, any>, fileOptions: IFileOptio
 
       results[key] = value;
     } else {
-      this['_log']('debug', `did not match key and value when parsing line ${index + 1}: ${line}`)
+      this._log('debug', `did not match key and value when parsing line ${index + 1}: ${line}`)
     }
   });
 
@@ -110,12 +110,12 @@ export function parseArgv (this: SimpleEnv<any, any>, argv: string[]): IObjectOf
       const key = curVal.substr(2).trim();
       // if the key already exists, log a warning
       if (typeof resObj[key] !== 'undefined') {
-        this['_log']('warn', `argv key "${key}" already exists. Overwriting initial value. \nThis happens when two argv keys are identical.\nExample: \`node index.js --DEV=true --DEV=false\`\nThe last argument will be used`);
+        this._log('warn', `argv key "${key}" already exists. Overwriting initial value. \nThis happens when two argv keys are identical.\nExample: \`node index.js --DEV=true --DEV=false\`\nThe last argument will be used`);
       }
 
       // if the last key does not have a value
       if (lastKey && !resObj[lastKey]) {
-        this['_log']('debug', `argv "${resObj[lastKey]}" did not have a value. Setting to "true".`);
+        this._log('debug', `argv "${resObj[lastKey]}" did not have a value. Setting to "true".`);
         resObj[lastKey] = 'true';
       }
 
@@ -138,7 +138,7 @@ export function parseArgv (this: SimpleEnv<any, any>, argv: string[]): IObjectOf
     // the curVal wasn't a key, so add it to the last key
     // if the last key doesn't exist, log a warning
     if (!lastKey) {
-      this['_log']('warn', `argv value "${curVal}" is not a key value and does not proceed a key. Ignoring value`);
+      this._log('warn', `argv value "${curVal}" is not a key value and does not proceed a key. Ignoring value`);
     } else { // we have a previous key
       resObj[lastKey] += ` ${curVal}`;
     }
@@ -151,7 +151,7 @@ export function parseArgv (this: SimpleEnv<any, any>, argv: string[]): IObjectOf
     let value = results[key].trim();
 
     const isDoubleQuoted = value.startsWith('"') && value.endsWith('"');
-    const isSingleQuoted = value.startsWith("'") && value.endsWith("'");
+    const isSingleQuoted = value.startsWith('\'') && value.endsWith('\'');
 
     if (isDoubleQuoted || isSingleQuoted) {
       value = value.substring(1, value.length - 1);
@@ -160,7 +160,7 @@ export function parseArgv (this: SimpleEnv<any, any>, argv: string[]): IObjectOf
     results[key] = value;
   });
 
-  this['_log']('debug', 'argv results', results);
+  this._log('debug', 'argv results', results);
 
   return results;
 }

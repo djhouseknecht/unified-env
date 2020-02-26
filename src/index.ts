@@ -103,6 +103,10 @@ export class SimpleEnv<T extends EnvOptionsObject, A> {
 
     // validate we have all the variables we require
     for (const key in this._expectedEnvVariables) {
+      if (!this._expectedEnvVariables.hasOwnProperty(key)) {
+        continue;
+      }
+
       const expectedVar = this._expectedEnvVariables[key];
 
       /* if the value does not exist */
@@ -164,7 +168,7 @@ export class SimpleEnv<T extends EnvOptionsObject, A> {
     return this._returnConfig;
   }
 
-  private _log (level: LogLevel, ...args: any[]): void {
+  public _log (level: LogLevel, ...args: any[]): void {
     if (LOG_LEVELS.indexOf(level) >= LOG_LEVELS.indexOf(this._simpleEnvOptions.logLevel)) {
       this._simpleEnvOptions.logger[level](`${LIB_NAME}:`, ...args);
     }
@@ -203,7 +207,7 @@ export class SimpleEnv<T extends EnvOptionsObject, A> {
 
     /* if the value is already set on the returning config */
     if (this._returnConfig[key] !== undefined) {
-      let tieBreaker = this._preformTieBreaker({ expectedVariable, key, from });
+      const tieBreaker = this._preformTieBreaker({ expectedVariable, key, from });
       if (!tieBreaker) {
         this._log('info', `key "${key}" already has value: "${this._returnConfig[key]}" - not setting to the new value: "${value}" from "${from}"`);
         return;
@@ -292,7 +296,7 @@ export class SimpleEnv<T extends EnvOptionsObject, A> {
   }
 
   private _setReturnedConfigValue (key: string, value: string | boolean | number): void {
-    let val = {};
+    const val = {};
     val[key] = value;
     this._log('info', 'setting config variable:', JSON.stringify(val));
     (this._returnConfig[key] as any) = value;

@@ -1,24 +1,43 @@
 {
   "name": "simple-env",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "description": "Simple environmental variables for node applications. Easily configure and use variables throughout your app.",
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc -p .",
     "test": "jest",
-    "test:watch": "jest --watch --collectCoverage=false"
+    "test:watch": "jest --watch --collectCoverage=false",
+    "lint": "tslint --project . --config tslint.json",
+    "semantic-release": "semantic-release",
+    "commit": "git-cz"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.25",
     "@types/node": "^13.1.1",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
+    "husky": "^4.2.3",
     "jest": "^24.9.0",
+    "semantic-release": "^17.0.4",
     "ts-jest": "^24.3.0",
+    "tslint": "^6.0.0",
     "typescript": "^3.6.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test",
+      "pre-push": "npm run lint && npm run test"
+    }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/djhouseknecht/simple-env.git"
+    "url": "https://github.com/djhouseknecht/simple-env.git"
   },
   "keywords": [
     "env",
