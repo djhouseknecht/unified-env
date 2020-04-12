@@ -1,0 +1,69 @@
+{
+  "name": "unified-env",
+  "version": "0.0.0-development",
+  "description": "Unify environmental variables for node applications. Easily configure and use variables throughout your app.",
+  "main": "dist/index.js",
+  "types": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "jest",
+    "test:watch": "jest --watch --collectCoverage=false",
+    "lint": "tslint --project . --config tslint.json",
+    "semantic-release": "semantic-release",
+    "commit": "git-cz",
+    "codecov": "codecov",
+    "sample:argv": "ts-node samples/argv/argv-sample.ts --APP_VAR=app variable --APP_BOOL=false --APP_PORT=3000",
+    "sample:env": "APP_VAR='app variable' APP_BOOL=false APP_PORT=3000 ts-node samples/env/env-sample.ts",
+    "sample:error": "ts-node samples/error/error-sample.ts ",
+    "sample:file": "ts-node samples/file/file-sample.ts"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^24.0.25",
+    "@types/node": "^13.1.1",
+    "codecov": "^3.6.5",
+    "commitizen": "^4.0.4",
+    "cz-conventional-changelog": "^3.1.0",
+    "husky": "^4.2.3",
+    "jest": "^24.9.0",
+    "semantic-release": "^17.0.4",
+    "ts-jest": "^24.3.0",
+    "ts-node": "^8.8.2",
+    "tslint": "^6.1.1",
+    "typescript": "~3.6.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run test",
+      "pre-push": "npm run lint && npm run test"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/djhouseknecht/unified-env.git"
+  },
+  "keywords": [
+    "env",
+    "environment",
+    "variables",
+    "config",
+    "configuration",
+    "typescript",
+    "node",
+    "argv",
+    "args",
+    "arguments",
+    "heroku"
+  ],
+  "author": "David Houseknecht <david.houseknecht.dev@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/djhouseknecht/unified-env/issues"
+  },
+  "homepage": "https://github.com/djhouseknecht/unified-env#readme"
+}
