@@ -1,4 +1,4 @@
-const { SimpleEnv } = require('../../dist/index');
+const { UnifiedEnv } = require('../../dist/index');
 const expectedVariables = {
   STR_VAL: {
     required: true,
@@ -8,10 +8,10 @@ const expectedVariables = {
   }
 };
 
-const simpleEnv = new SimpleEnv(expectedVariables, { logLevel: 'info' });
+const unifiedEnv = new UnifiedEnv(expectedVariables, { logLevel: 'info' });
 console.log({ argv: process.argv })
 try {
-  const config = simpleEnv
+  const config = unifiedEnv
     .env()
     .argv()
     .generate();

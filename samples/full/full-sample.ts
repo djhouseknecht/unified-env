@@ -1,8 +1,8 @@
 import { resolve } from 'path';
-import { SimpleEnv } from '../../src/index';
+import { UnifiedEnv } from '../../src/index';
 
 /**
- * In this example, SimpleEnv will parse `process.env`, `process.argv` and a `.env` file
+ * In this example, UnifiedEnv will parse `process.env`, `process.argv` and a `.env` file
  *  and return an object with the requested config
  * 
  * From the root directory run the following command
@@ -19,7 +19,7 @@ import { SimpleEnv } from '../../src/index';
 /* build the path to the .env file */
 const filePath = resolve(process.cwd(), 'samples/full/.env');
 
-const environment = new SimpleEnv({
+const environment = new UnifiedEnv({
   ENV_VAR: true, // `true` = a required, string
   ARGV_VAR: true,
   FILE_VAR: true,

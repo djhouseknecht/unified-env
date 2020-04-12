@@ -1,4 +1,4 @@
-export type SimpleEnvReturnObject<Obj extends EnvOptionsObject> = {
+export type UnifiedEnvReturnObject<Obj extends EnvOptionsObject> = {
   [key in keyof Obj]: TypeFromConstructor<
     Obj[key] extends EnvOption
     ? Obj[key]['type']
@@ -10,7 +10,7 @@ export type TypeFromConstructor<T> = T extends BooleanConstructor
   ? boolean
   : T extends NumberConstructor ? number : string;
 
-export type SimpleEnvErrorObject<Obj extends EnvOptionsObject> = { [key in keyof Obj]: string[] };
+export type UnifiedEnvErrorObject<Obj extends EnvOptionsObject> = { [key in keyof Obj]: string[] };
 
 
 export type ValidType = StringConstructor | NumberConstructor | BooleanConstructor;
@@ -32,7 +32,7 @@ export interface IObjectOfStings {
   [key: string]: string;
 }
 
-export interface ISimpleEnvOptions {
+export interface IUnifiedEnvOptions {
   logLevel: LogLevel;
   logger: ILogger;
   // allowNonDeclaredVariables: boolean; // TODO: add this functionality
@@ -66,7 +66,7 @@ export interface IFileOptions {
 //   tieBreaker?: TieBreakers;
 // };
 
-// export interface ISimpleEnvOptions {
+// export interface IUnifiedEnvOptions {
 //   logLevel: LogLevel;
 //   logger: ILogger;
 //   requireOrder: string[]; // would need this

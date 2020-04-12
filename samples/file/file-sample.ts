@@ -1,8 +1,8 @@
 import { resolve } from 'path';
-import { SimpleEnv } from '../../src/index';
+import { UnifiedEnv } from '../../src/index';
 
 /**
- * In this example, SimpleEnv will parse the `.env` file
+ * In this example, UnifiedEnv will parse the `.env` file
  *  and return an object with the requested config
  * 
  * From the root directory run the following command
@@ -18,7 +18,7 @@ import { SimpleEnv } from '../../src/index';
 
 const filePath = resolve(process.cwd(), 'samples/file/.env');
 
-const environment = new SimpleEnv({
+const environment = new UnifiedEnv({
   APP_VAR: true, // `true` = a required, string
   APP_BOOL: { required: true, type: Boolean }, // a required boolean
   APP_PORT: { required: true, type: Number, acceptableValues: [2000, 3000, 4000] }, // a required number of 200, 300, or 4000

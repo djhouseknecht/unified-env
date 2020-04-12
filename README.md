@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/djhouseknecht/simple-env.svg?branch=master)](https://travis-ci.org/djhouseknecht/simple-env)  [![codecov](https://codecov.io/gh/djhouseknecht/simple-env/branch/master/graph/badge.svg)](https://codecov.io/gh/djhouseknecht/simple-env)  [![npm version](https://badge.fury.io/js/simple-env.svg)](https://badge.fury.io/js/simple-env)  [![dependabot-status](https://flat.badgen.net/dependabot/djhouseknecht/simple-env/?icon=dependabot)][dependabot]  [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)  [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) 
+[![Build Status](https://travis-ci.org/djhouseknecht/unified-env.svg?branch=master)](https://travis-ci.org/djhouseknecht/unified-env)  [![codecov](https://codecov.io/gh/djhouseknecht/unified-env/branch/master/graph/badge.svg)](https://codecov.io/gh/djhouseknecht/unified-env)  [![npm version](https://badge.fury.io/js/unified-env.svg)](https://badge.fury.io/js/unified-env)  [![dependabot-status](https://flat.badgen.net/dependabot/djhouseknecht/unified-env/?icon=dependabot)][dependabot]  [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)  [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) 
 
-# Simple-Env
-Simple environmental variables for node applications. Easily configure and use variables throughout your app.
+# Unified-Env
+Unified environmental variables for node applications. Easily configure and use variables throughout your app.
 
 ## Basic Usage
-Tell `simple-env` (SE) which order you want 
+Tell `unified-env` (UE) which order you want 
 
 ``` bash
 

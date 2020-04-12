@@ -1,16 +1,16 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { ISimpleEnvOptions, LogLevel, IFileOptions, IObjectOfStings, ILogger, EnvOption, EnvOptionsObject } from './interfaces';
-import { SimpleEnv } from '../index';
+import { IUnifiedEnvOptions, LogLevel, IFileOptions, IObjectOfStings, ILogger, EnvOption, EnvOptionsObject } from './interfaces';
+import { UnifiedEnv } from '../index';
 
 export const LOG_LEVELS: LogLevel[] = ['log', 'debug', 'info', 'warn', 'error'];
-export const LIB_NAME = 'SimpleEnv';
+export const LIB_NAME = 'UnifiedEnv';
 
 export function isEnvOptionObject (option: EnvOption | boolean): option is EnvOption {
   return typeof option === 'object';
 }
 
-export function validateConfigOptions (options: ISimpleEnvOptions): void {
+export function validateConfigOptions (options: IUnifiedEnvOptions): void {
   const errors: string[] = [];
   let validLogger = true;
 
@@ -52,7 +52,7 @@ export function validateConfigOptions (options: ISimpleEnvOptions): void {
   }
 }
 
-export function parseEnvFile (this: SimpleEnv<any, any>, fileOptions: IFileOptions): IObjectOfStings {
+export function parseEnvFile (this: UnifiedEnv<any, any>, fileOptions: IFileOptions): IObjectOfStings {
 
   const NEWLINE = '\n'
   const RE_INI_KEY_VAL = /^\s*([\w.-]+)\s*=\s*(.*)?\s*$/
@@ -101,7 +101,7 @@ export function parseEnvFile (this: SimpleEnv<any, any>, fileOptions: IFileOptio
   return results;
 }
 
-export function parseArgv (this: SimpleEnv<any, any>, argv: string[]): IObjectOfStings {
+export function parseArgv (this: UnifiedEnv<any, any>, argv: string[]): IObjectOfStings {
   let lastKey = '';
   const results: IObjectOfStings = argv.reduce((resObj, curVal, index) => {
 

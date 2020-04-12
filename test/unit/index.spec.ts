@@ -1,11 +1,11 @@
 import {
-  ISimpleEnvOptions,
+  IUnifiedEnvOptions,
   ILogger,
   IFileOptions,
   EnvOptionsObject,
   EnvOption
 } from '../../src/utils/interfaces';
-import { SimpleEnv } from '../../src/index';
+import { UnifiedEnv } from '../../src/index';
 import * as utils from '../../src/utils/utils';
 import { LIB_NAME } from '../../src/utils/utils';
 
@@ -17,43 +17,43 @@ const spyLogger: ILogger = {
   error: jest.fn(),
 };
 
-const defaultConfigOptions: ISimpleEnvOptions = {
+const defaultConfigOptions: IUnifiedEnvOptions = {
   logLevel: 'warn',
   logger: console,
   // requireOrder: ['dev', 'test', 'prod'],
   // orderField: 'ENV'
 };
 
-describe('SimpleEnv', () => {
+describe('UnifiedEnv', () => {
   describe('constructor()', () => {
     test('should set expected env variables and config to default config', () => {
       const envVars = { K: {}, B: {} };
-      const config = new SimpleEnv(envVars);
-      expect(config['_simpleEnvOptions']).toEqual(defaultConfigOptions);
+      const config = new UnifiedEnv(envVars);
+      expect(config['_unifiedEnvOptions']).toEqual(defaultConfigOptions);
       expect(config['_expectedEnvVariables']).toEqual(envVars);
     });
 
     test('should lowercase passed in logLevel', () => {
-      const config = new SimpleEnv({}, { logLevel: 'ERROR' as any });
-      expect(config['_simpleEnvOptions'].logLevel).toEqual('error');
+      const config = new UnifiedEnv({}, { logLevel: 'ERROR' as any });
+      expect(config['_unifiedEnvOptions'].logLevel).toEqual('error');
     });
 
     test('should validate config options and expectedEnvVariables', () => {
       const configSpy = jest.spyOn(utils, 'validateConfigOptions');
       const varSpy = jest.spyOn(utils, 'validateExpectedVariables');
       const envVars = { K: {}, B: {} };
-      new SimpleEnv(envVars);
+      new UnifiedEnv(envVars);
       expect(configSpy).toHaveBeenCalledWith(defaultConfigOptions);
       expect(varSpy).toHaveBeenCalledWith(envVars);
     });
 
     test('should merge config options with defaults', () => {
-      const options: Partial<ISimpleEnvOptions> = {
+      const options: Partial<IUnifiedEnvOptions> = {
         logLevel: 'debug',
         // orderField: 'KTY'
       };
-      const env = new SimpleEnv({}, options);
-      expect(env['_simpleEnvOptions']).toEqual({
+      const env = new UnifiedEnv({}, options);
+      expect(env['_unifiedEnvOptions']).toEqual({
         logLevel: 'debug',
         logger: console,
         // requireOrder: ['dev', 'test', 'prod'],
@@ -64,13 +64,13 @@ describe('SimpleEnv', () => {
 
   describe('env()', () => {
     test('should call _loopThroughResults with process.env variables', () => {
-      const simpleEnv = new SimpleEnv({});
+      const unifiedEnv = new UnifiedEnv({});
       const loopSpy = jest.fn();
       const logSpy = jest.fn();
-      simpleEnv['_loopThroughResults'] = loopSpy;
-      simpleEnv['_log'] = logSpy;
+      unifiedEnv['_loopThroughResults'] = loopSpy;
+      unifiedEnv['_log'] = logSpy;
 
-      simpleEnv.env();
+      unifiedEnv.env();
       expect(loopSpy).toHaveBeenCalledTimes(1);
       expect(loopSpy).toHaveBeenCalledWith('env', process.env);
       expect(logSpy).toHaveBeenCalledTimes(2);
@@ -89,11 +89,11 @@ describe('SimpleEnv', () => {
       const loopSpy = jest.fn();
       const parseArgvSpy = jest.spyOn(utils, 'parseArgv').mockReturnValue(mockArgvReturnObject);
       const logSpy = jest.fn();
-      const simpleEnv = new SimpleEnv({});
-      simpleEnv['_loopThroughResults'] = loopSpy;
-      simpleEnv['_log'] = logSpy;
+      const unifiedEnv = new UnifiedEnv({});
+      unifiedEnv['_loopThroughResults'] = loopSpy;
+      unifiedEnv['_log'] = logSpy;
 
-      simpleEnv.argv();
+      unifiedEnv.argv();
       expect(loopSpy).toHaveBeenCalledTimes(1);
       expect(loopSpy).toHaveBeenCalledWith('argv', mockArgvReturnObject);
       expect(parseArgvSpy).toHaveBeenCalledWith(process.argv.slice(2));
@@ -117,11 +117,11 @@ describe('SimpleEnv', () => {
       const loopSpy = jest.fn();
       const parseEnvFileSpy = jest.spyOn(utils, 'parseEnvFile').mockReturnValue(mockEnvFileReturnObject);
       const logSpy = jest.fn();
-      const simpleEnv = new SimpleEnv({});
-      simpleEnv['_loopThroughResults'] = loopSpy;
-      simpleEnv['_log'] = logSpy;
+      const unifiedEnv = new UnifiedEnv({});
+      unifiedEnv['_loopThroughResults'] = loopSpy;
+      unifiedEnv['_log'] = logSpy;
 
-      simpleEnv.file();
+      unifiedEnv.file();
       expect(loopSpy).toHaveBeenCalledTimes(1);
       expect(loopSpy).toHaveBeenCalledWith('file', mockEnvFileReturnObject);
       expect(parseEnvFileSpy).toHaveBeenCalledWith(defaultFileOptions);
@@ -134,15 +134,15 @@ describe('SimpleEnv', () => {
       const loopSpy = jest.fn();
       const parseEnvFileSpy = jest.spyOn(utils, 'parseEnvFile').mockReturnValue(void 0);
       const logSpy = jest.fn();
-      const simpleEnv = new SimpleEnv({});
-      simpleEnv['_loopThroughResults'] = loopSpy;
-      simpleEnv['_log'] = logSpy;
+      const unifiedEnv = new UnifiedEnv({});
+      unifiedEnv['_loopThroughResults'] = loopSpy;
+      unifiedEnv['_log'] = logSpy;
 
       const fileOptions: IFileOptions = {
         encoding: 'does-not-matter',
         filePath: './src/whatever'
       }
-      simpleEnv.file(fileOptions);
+      unifiedEnv.file(fileOptions);
       expect(parseEnvFileSpy).toHaveBeenCalledWith(fileOptions);
     });
   });
@@ -153,7 +153,7 @@ describe('SimpleEnv', () => {
 
   describe('_log()', () => {
     test('should only log messages greater than or equal to log level', () => {
-      const simpleEnv = new SimpleEnv({}, {
+      const unifiedEnv = new UnifiedEnv({}, {
         logger: spyLogger,
         logLevel: 'info'
       });
@@ -164,11 +164,11 @@ describe('SimpleEnv', () => {
       const warnMsg = 'I am a warn';
       const errorMsg = 'I am a error';
 
-      simpleEnv['_log']('log', logMsg);
-      simpleEnv['_log']('debug', debugMsg);
-      simpleEnv['_log']('info', infoMsg);
-      simpleEnv['_log']('warn', warnMsg);
-      simpleEnv['_log']('error', errorMsg);
+      unifiedEnv['_log']('log', logMsg);
+      unifiedEnv['_log']('debug', debugMsg);
+      unifiedEnv['_log']('info', infoMsg);
+      unifiedEnv['_log']('warn', warnMsg);
+      unifiedEnv['_log']('error', errorMsg);
 
       expect(spyLogger.log).not.toHaveBeenCalled();
       expect(spyLogger.debug).not.toHaveBeenCalled();
@@ -186,14 +186,14 @@ describe('SimpleEnv', () => {
         LOGGY: loggy,
         IGNORE_ME: ignoreMe,
       };
-      const simpleEnv = new SimpleEnv({ LOGGY: true });
+      const unifiedEnv = new UnifiedEnv({ LOGGY: true });
 
       const spy = jest.fn();
       const logSpy = jest.fn();
-      simpleEnv['_addValueToConfig'] = spy;
-      simpleEnv['_log'] = logSpy;
+      unifiedEnv['_addValueToConfig'] = spy;
+      unifiedEnv['_log'] = logSpy;
 
-      simpleEnv['_loopThroughResults']('argv', passedInResults);
+      unifiedEnv['_loopThroughResults']('argv', passedInResults);
       expect(spy).toHaveBeenCalledTimes(1);
       expect(logSpy).toHaveBeenCalledTimes(1);
       expect(logSpy).toHaveBeenCalledWith('debug', expect.stringContaining('found key "LOGGY" in argv'));
@@ -210,11 +210,11 @@ describe('SimpleEnv', () => {
         EXPECTED: true
       };
 
-      const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-      const spy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
+      const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+      const spy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
 
-      simpleEnv['_addValueToConfig'](key, value, 'argv');
-      expect(simpleEnv['_returnConfig'][key]).toBe(value);
+      unifiedEnv['_addValueToConfig'](key, value, 'argv');
+      expect(unifiedEnv['_returnConfig'][key]).toBe(value);
       expect(spy).toHaveBeenCalledWith(key, value);
     });
 
@@ -225,13 +225,13 @@ describe('SimpleEnv', () => {
       const envVars: EnvOptionsObject = {
         EXPECTED: true
       };
-      const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
+      const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
 
-      const spy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
-      const logSpy = jest.spyOn(simpleEnv, '_log' as any);
+      const spy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
+      const logSpy = jest.spyOn(unifiedEnv, '_log' as any);
 
-      simpleEnv['_addValueToConfig'](key, value, 'argv');
-      expect(simpleEnv['_returnConfig'][key]).toBe(undefined);
+      unifiedEnv['_addValueToConfig'](key, value, 'argv');
+      expect(unifiedEnv['_returnConfig'][key]).toBe(undefined);
       expect(spy).not.toHaveBeenCalled();
       expect(logSpy).toHaveBeenCalledWith('warn', expect.stringContaining(`key "${key}" was not found`));
     });
@@ -245,18 +245,18 @@ describe('SimpleEnv', () => {
         const envVars: EnvOptionsObject = {
           EXPECTED: true
         };
-        const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-        const setSpy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
-        const logSpy = jest.spyOn(simpleEnv, '_log' as any);
-        const tieBreakerSpy = jest.spyOn(simpleEnv, '_preformTieBreaker' as any).mockReturnValue(false);
+        const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+        const setSpy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
+        const logSpy = jest.spyOn(unifiedEnv, '_log' as any);
+        const tieBreakerSpy = jest.spyOn(unifiedEnv, '_preformTieBreaker' as any).mockReturnValue(false);
 
-        simpleEnv['_returnConfig'][key] = curValue;
-        simpleEnv['_addValueToConfig'](key, newValue, 'argv');
+        unifiedEnv['_returnConfig'][key] = curValue;
+        unifiedEnv['_addValueToConfig'](key, newValue, 'argv');
 
         expect(tieBreakerSpy).toHaveBeenCalledWith({ expectedVariable: envVars.EXPECTED, key, from: 'argv' });
         expect(logSpy).toHaveBeenCalledWith('info', expect.stringContaining(`key "${key}" already has value`));
         expect(setSpy).not.toHaveBeenCalled();
-        expect(simpleEnv['_returnConfig'][key]).toBe(curValue);
+        expect(unifiedEnv['_returnConfig'][key]).toBe(curValue);
       });
 
       test('and continue/overwrite value if the tieBreaker passed', () => {
@@ -267,18 +267,18 @@ describe('SimpleEnv', () => {
         const envVars: EnvOptionsObject = {
           EXPECTED: { tieBreaker: 'argv' }
         };
-        const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-        const setSpy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
-        const logSpy = jest.spyOn(simpleEnv, '_log' as any);
-        const tieBreakerSpy = jest.spyOn(simpleEnv, '_preformTieBreaker' as any).mockReturnValue(true);
+        const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+        const setSpy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
+        const logSpy = jest.spyOn(unifiedEnv, '_log' as any);
+        const tieBreakerSpy = jest.spyOn(unifiedEnv, '_preformTieBreaker' as any).mockReturnValue(true);
 
-        simpleEnv['_returnConfig'][key] = curValue;
-        simpleEnv['_addValueToConfig'](key, newValue, 'argv');
+        unifiedEnv['_returnConfig'][key] = curValue;
+        unifiedEnv['_addValueToConfig'](key, newValue, 'argv');
 
         expect(tieBreakerSpy).toHaveBeenCalledWith({ expectedVariable: envVars.EXPECTED, key, from: 'argv' });
         expect(logSpy).toHaveBeenCalledWith('info', expect.stringContaining(`key "${key}" already has value`));
         expect(setSpy).toHaveBeenCalledWith(key, newValue);
-        expect(simpleEnv['_returnConfig'][key]).toBe(newValue);
+        expect(unifiedEnv['_returnConfig'][key]).toBe(newValue);
       });
     });
 
@@ -290,12 +290,12 @@ describe('SimpleEnv', () => {
           EXPECTED: true
         };
 
-        const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-        const spy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
+        const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+        const spy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
 
-        simpleEnv['_addValueToConfig'](key, value, 'argv');
-        expect(simpleEnv['_returnConfig'][key]).toBe(value);
-        expect(typeof simpleEnv['_returnConfig'][key]).toBe('string');
+        unifiedEnv['_addValueToConfig'](key, value, 'argv');
+        expect(unifiedEnv['_returnConfig'][key]).toBe(value);
+        expect(typeof unifiedEnv['_returnConfig'][key]).toBe('string');
         expect(spy).toHaveBeenCalledWith(key, value);
       });
 
@@ -306,12 +306,12 @@ describe('SimpleEnv', () => {
           EXPECTED: { required: true }
         };
 
-        const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-        const spy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
+        const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+        const spy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
 
-        simpleEnv['_addValueToConfig'](key, value, 'argv');
-        expect(simpleEnv['_returnConfig'][key]).toBe(value);
-        expect(typeof simpleEnv['_returnConfig'][key]).toBe('string');
+        unifiedEnv['_addValueToConfig'](key, value, 'argv');
+        expect(unifiedEnv['_returnConfig'][key]).toBe(value);
+        expect(typeof unifiedEnv['_returnConfig'][key]).toBe('string');
         expect(spy).toHaveBeenCalledWith(key, value);
       });
 
@@ -322,12 +322,12 @@ describe('SimpleEnv', () => {
           EXPECTED: { required: true, type: String }
         };
 
-        const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-        const spy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
+        const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+        const spy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
 
-        simpleEnv['_addValueToConfig'](key, value, 'argv');
-        expect(simpleEnv['_returnConfig'][key]).toBe(value);
-        expect(typeof simpleEnv['_returnConfig'][key]).toBe('string');
+        unifiedEnv['_addValueToConfig'](key, value, 'argv');
+        expect(unifiedEnv['_returnConfig'][key]).toBe(value);
+        expect(typeof unifiedEnv['_returnConfig'][key]).toBe('string');
         expect(spy).toHaveBeenCalledWith(key, value);
       });
     });
@@ -340,13 +340,13 @@ describe('SimpleEnv', () => {
         EXPECTED: { required: true, type: Boolean }
       };
 
-      const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-      const setSpy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
-      const parseSpy = jest.spyOn(simpleEnv, '_parseExpectedVariable' as any).mockReturnValue(parsedValue);
+      const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+      const setSpy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
+      const parseSpy = jest.spyOn(unifiedEnv, '_parseExpectedVariable' as any).mockReturnValue(parsedValue);
 
-      simpleEnv['_addValueToConfig'](key, value, 'argv');
-      expect(simpleEnv['_returnConfig'][key]).toBe(parsedValue);
-      expect(typeof simpleEnv['_returnConfig'][key]).toBe('boolean');
+      unifiedEnv['_addValueToConfig'](key, value, 'argv');
+      expect(unifiedEnv['_returnConfig'][key]).toBe(parsedValue);
+      expect(typeof unifiedEnv['_returnConfig'][key]).toBe('boolean');
       expect(setSpy).toHaveBeenCalledWith(key, parsedValue);
       expect(parseSpy).toHaveBeenCalledWith({ expectedVariable: envVars.EXPECTED, key, value });
     });
@@ -360,13 +360,13 @@ describe('SimpleEnv', () => {
         EXPECTED: { required: true, type: Boolean }
       };
 
-      const simpleEnv = new SimpleEnv(envVars, { logger: spyLogger });
-      const setSpy = jest.spyOn(simpleEnv, '_setReturnedConfigValue' as any);
-      const logSpy = jest.spyOn(simpleEnv, '_log' as any);
-      const parseSpy = jest.spyOn(simpleEnv, '_parseExpectedVariable' as any).mockImplementation(() => { throw new Error(errMsg); });
+      const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
+      const setSpy = jest.spyOn(unifiedEnv, '_setReturnedConfigValue' as any);
+      const logSpy = jest.spyOn(unifiedEnv, '_log' as any);
+      const parseSpy = jest.spyOn(unifiedEnv, '_parseExpectedVariable' as any).mockImplementation(() => { throw new Error(errMsg); });
 
-      simpleEnv['_addValueToConfig'](key, value, 'argv');
-      expect(simpleEnv['_returnConfig'][key]).toBe(undefined);
+      unifiedEnv['_addValueToConfig'](key, value, 'argv');
+      expect(unifiedEnv['_returnConfig'][key]).toBe(undefined);
       expect(logSpy).toHaveBeenCalledWith('error', errMsg);
       expect(logSpy).toHaveBeenCalledWith('warn', expect.stringContaining(`key "${key}" had a parsing error.`));
       expect(setSpy).not.toHaveBeenCalledWith();
@@ -375,13 +375,13 @@ describe('SimpleEnv', () => {
   });
 
   describe('_preformTieBreaker()', () => {
-    let simpleEnv: SimpleEnv<any, any>;
+    let unifiedEnv: UnifiedEnv<any, any>;
     beforeEach(() => {
-      simpleEnv = new SimpleEnv({});
+      unifiedEnv = new UnifiedEnv({});
     });
     describe('should return false if', () => {
       test('the expected variable is not an EnvObject', () => {
-        const fn = simpleEnv['_preformTieBreaker'].bind(simpleEnv);
+        const fn = unifiedEnv['_preformTieBreaker'].bind(unifiedEnv);
         const from = 'argv';
         const key = 'KEY';
         const expectedVariable = true;
@@ -390,7 +390,7 @@ describe('SimpleEnv', () => {
       });
 
       test('the expected variable does not have a tieBreaker', () => {
-        const fn = simpleEnv['_preformTieBreaker'].bind(simpleEnv);
+        const fn = unifiedEnv['_preformTieBreaker'].bind(unifiedEnv);
         const from = 'argv';
         const key = 'KEY';
         const expectedVariable: EnvOption = { required: true };
@@ -399,7 +399,7 @@ describe('SimpleEnv', () => {
       });
 
       test('the expected variable\'s tieBreaker does not match the "from"', () => {
-        const fn = simpleEnv['_preformTieBreaker'].bind(simpleEnv);
+        const fn = unifiedEnv['_preformTieBreaker'].bind(unifiedEnv);
         const from = 'argv';
         const key = 'KEY';
         const expectedVariable: EnvOption = { required: true, tieBreaker: 'env' };
@@ -410,7 +410,7 @@ describe('SimpleEnv', () => {
 
     describe('should return true if', () => {
       test('the expected variable\'s tieBreaker matches the "from"', () => {
-        const fn = simpleEnv['_preformTieBreaker'].bind(simpleEnv);
+        const fn = unifiedEnv['_preformTieBreaker'].bind(unifiedEnv);
         const from = 'argv';
         const key = 'KEY';
         const expectedVariable: EnvOption = { required: true, tieBreaker: 'argv' };
@@ -424,8 +424,8 @@ describe('SimpleEnv', () => {
     test('should parse correctly', () => {
       const BOOL_VAL: EnvOption = { type: Boolean };
       const NUM_VAL: EnvOption = { type: Number };
-      const simpleEnv = new SimpleEnv({ BOOL_VAL, NUM_VAL });
-      const fn = simpleEnv['_parseExpectedVariable'].bind(simpleEnv);
+      const unifiedEnv = new UnifiedEnv({ BOOL_VAL, NUM_VAL });
+      const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);
       const numValue = '1234.5';
       const boolValue = 'false';
 
@@ -435,13 +435,13 @@ describe('SimpleEnv', () => {
 
     test('should delete any existing parsing errors', () => {
       const NUM_VAL: EnvOption = { type: Number };
-      const simpleEnv = new SimpleEnv({ NUM_VAL });
-      const fn = simpleEnv['_parseExpectedVariable'].bind(simpleEnv);
+      const unifiedEnv = new UnifiedEnv({ NUM_VAL });
+      const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);
       const numValue = '1234.5';
-      simpleEnv['_errors'].NUM_VAL = ['There was an error'];
+      unifiedEnv['_errors'].NUM_VAL = ['There was an error'];
 
       expect(fn({ expectedVariable: NUM_VAL, key: 'NUM_VAL', value: numValue })).toBe(1234.5);
-      expect(simpleEnv['_errors'].NUM_VAL).toBe(undefined);
+      expect(unifiedEnv['_errors'].NUM_VAL).toBe(undefined);
     });
 
     describe('should throw if parsing fails', () => {
@@ -450,8 +450,8 @@ describe('SimpleEnv', () => {
         const NUM_VAL: EnvOption = { type: Number };
         const UNKNOWN_VAL: EnvOption = { type: Array } as any;
 
-        const simpleEnv = new SimpleEnv({ BOOL_VAL, NUM_VAL, UNKNOWN_VAL });
-        const fn = simpleEnv['_parseExpectedVariable'].bind(simpleEnv);
+        const unifiedEnv = new UnifiedEnv({ BOOL_VAL, NUM_VAL, UNKNOWN_VAL });
+        const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);
         const numValue = 'not-a-number';
         const boolValue = 'not-a-boolean';
 
@@ -464,9 +464,9 @@ describe('SimpleEnv', () => {
 
   describe('_setReturnedConfigValue()', () => {
     test('should log and set config value', () => {
-      const simpleEnv = new SimpleEnv({});
-      const fn = simpleEnv['_setReturnedConfigValue'].bind(simpleEnv);
-      const spy = jest.spyOn(simpleEnv, '_log' as any);
+      const unifiedEnv = new UnifiedEnv({});
+      const fn = unifiedEnv['_setReturnedConfigValue'].bind(unifiedEnv);
+      const spy = jest.spyOn(unifiedEnv, '_log' as any);
       const val1 = { key: 'VAL1', value: 'value1' };
       const val2 = { key: 'VAL2', value: true };
       const val3 = { key: 'VAL3', value: 123.45 };
@@ -487,7 +487,7 @@ describe('SimpleEnv', () => {
       expect(spy).toHaveBeenNthCalledWith(3, 'info', 'setting config variable:',
         JSON.stringify({ VAL3: val3.value }));
 
-      expect(simpleEnv['_returnConfig']).toEqual(expected);
+      expect(unifiedEnv['_returnConfig']).toEqual(expected);
     });
   });
 

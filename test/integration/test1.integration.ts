@@ -1,12 +1,12 @@
 import { EnvOptionsObject } from '../../src/utils/interfaces';
-import { SimpleEnv } from '../../src/index';
+import { UnifiedEnv } from '../../src/index';
 
 // process.argv = [
 //   '--STR_VAL=s',
 //   'str'
 // ];
 
-describe.skip('SimpleEnv', () => {
+describe.skip('UnifiedEnv', () => {
   test('should do something', () => {
     const expectedVariables: EnvOptionsObject = {
       STR_VAL: {
@@ -17,9 +17,9 @@ describe.skip('SimpleEnv', () => {
       }
     };
 
-    const simpleEnv = new SimpleEnv(expectedVariables);
+    const unifiedEnv = new UnifiedEnv(expectedVariables);
     console.log({ argv: process.argv })
-    const config = simpleEnv.argv().generate();
+    const config = unifiedEnv.argv().generate();
 
     expect(config).toBeTruthy();
   });

@@ -2,12 +2,12 @@ import { validateExpectedVariables, finalTypesMatch, joinArray } from './utils/u
 import {
   LogLevel,
   EnvOptionsObject,
-  SimpleEnvReturnObject,
-  ISimpleEnvOptions,
+  UnifiedEnvReturnObject,
+  IUnifiedEnvOptions,
   IFileOptions,
   IObjectOfStings,
   TieBreakers,
-  SimpleEnvErrorObject,
+  UnifiedEnvErrorObject,
   EnvOption
 } from './utils/interfaces';
 import {
@@ -31,15 +31,15 @@ type ParseVariableParams = {
   expectedVariable: EnvOption;
 }
 
-export class SimpleEnv<T extends EnvOptionsObject, A> {
+export class UnifiedEnv<T extends EnvOptionsObject, A> {
   private _expectedEnvVariables: T;
-  private _returnConfig: SimpleEnvReturnObject<T> = {} as any;
-  private _errors: SimpleEnvErrorObject<T> = {} as any;
-  private _simpleEnvOptions: ISimpleEnvOptions;
+  private _returnConfig: UnifiedEnvReturnObject<T> = {} as any;
+  private _errors: UnifiedEnvErrorObject<T> = {} as any;
+  private _unifiedEnvOptions: IUnifiedEnvOptions;
   private _hasGeneratedConfig: boolean = false;
 
-  constructor (expectedEnvVariables: T, configOptions: Partial<ISimpleEnvOptions> = {}) {
-    const defaultConfigOptions: ISimpleEnvOptions = {
+  constructor (expectedEnvVariables: T, configOptions: Partial<IUnifiedEnvOptions> = {}) {
+    const defaultConfigOptions: IUnifiedEnvOptions = {
       logLevel: 'warn',
       logger: console,
       // requireOrder: ['dev', 'test', 'prod'],
@@ -50,12 +50,12 @@ export class SimpleEnv<T extends EnvOptionsObject, A> {
     this._expectedEnvVariables = expectedEnvVariables;
     validateExpectedVariables(this._expectedEnvVariables);
 
-    /* set and validate _simpleEnvOptions */
-    this._simpleEnvOptions = Object.assign(defaultConfigOptions, configOptions);
-    this._simpleEnvOptions.logLevel = this._simpleEnvOptions.logLevel.toLocaleLowerCase() as LogLevel;
+    /* set and validate _unifiedEnvOptions */
+    this._unifiedEnvOptions = Object.assign(defaultConfigOptions, configOptions);
+    this._unifiedEnvOptions.logLevel = this._unifiedEnvOptions.logLevel.toLocaleLowerCase() as LogLevel;
 
-    validateConfigOptions(this._simpleEnvOptions);
-    this._log('debug', 'constructed with config options', this._simpleEnvOptions);
+    validateConfigOptions(this._unifiedEnvOptions);
+    this._log('debug', 'constructed with config options', this._unifiedEnvOptions);
     this._log('debug', 'expecting variables', this._expectedEnvVariables);
   }
 
@@ -89,7 +89,7 @@ export class SimpleEnv<T extends EnvOptionsObject, A> {
     return this;
   }
 
-  public generate (): Readonly<SimpleEnvReturnObject<T>> {
+  public generate (): Readonly<UnifiedEnvReturnObject<T>> {
     this._log('info', 'generating config');
 
     if (this._hasGeneratedConfig) {
@@ -169,8 +169,8 @@ export class SimpleEnv<T extends EnvOptionsObject, A> {
   }
 
   private _log (level: LogLevel, ...args: any[]): void {
-    if (LOG_LEVELS.indexOf(level) >= LOG_LEVELS.indexOf(this._simpleEnvOptions.logLevel)) {
-      this._simpleEnvOptions.logger[level](`${LIB_NAME}:`, ...args);
+    if (LOG_LEVELS.indexOf(level) >= LOG_LEVELS.indexOf(this._unifiedEnvOptions.logLevel)) {
+      this._unifiedEnvOptions.logger[level](`${LIB_NAME}:`, ...args);
     }
   }
 
