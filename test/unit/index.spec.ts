@@ -2,8 +2,8 @@ import {
   IUnifiedEnvOptions,
   ILogger,
   IFileOptions,
-  EnvOptionsObject,
-  EnvOption
+  IEnvOptionsObject,
+  IEnvOption
 } from '../../src/utils/interfaces';
 import { UnifiedEnv } from '../../src/index';
 import * as utils from '../../src/utils/utils';
@@ -206,7 +206,7 @@ describe('UnifiedEnv', () => {
     test('should add values that are expected', () => {
       const key = 'EXPECTED';
       const value = 'VALUE';
-      const envVars: EnvOptionsObject = {
+      const envVars: IEnvOptionsObject = {
         EXPECTED: true
       };
 
@@ -222,7 +222,7 @@ describe('UnifiedEnv', () => {
       const key = 'UNEXPECTED';
       const value = 'VALUE';
 
-      const envVars: EnvOptionsObject = {
+      const envVars: IEnvOptionsObject = {
         EXPECTED: true
       };
       const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
@@ -242,7 +242,7 @@ describe('UnifiedEnv', () => {
         const curValue = 'VALUE';
         const newValue = 'NEW_VALUE';
 
-        const envVars: EnvOptionsObject = {
+        const envVars: IEnvOptionsObject = {
           EXPECTED: true
         };
         const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
@@ -264,7 +264,7 @@ describe('UnifiedEnv', () => {
         const curValue = 'VALUE';
         const newValue = 'NEW_VALUE';
 
-        const envVars: EnvOptionsObject = {
+        const envVars: IEnvOptionsObject = {
           EXPECTED: { tieBreaker: 'argv' }
         };
         const unifiedEnv = new UnifiedEnv(envVars, { logger: spyLogger });
@@ -286,7 +286,7 @@ describe('UnifiedEnv', () => {
       test('if expectedVariable is "true"', () => {
         const key = 'EXPECTED';
         const value = 'VALUE';
-        const envVars: EnvOptionsObject = {
+        const envVars: IEnvOptionsObject = {
           EXPECTED: true
         };
 
@@ -302,7 +302,7 @@ describe('UnifiedEnv', () => {
       test('if expectedVariable.type is not set', () => {
         const key = 'EXPECTED';
         const value = 'VALUE';
-        const envVars: EnvOptionsObject = {
+        const envVars: IEnvOptionsObject = {
           EXPECTED: { required: true }
         };
 
@@ -318,7 +318,7 @@ describe('UnifiedEnv', () => {
       test('if expectedVariable.type is set to String', () => {
         const key = 'EXPECTED';
         const value = 'VALUE';
-        const envVars: EnvOptionsObject = {
+        const envVars: IEnvOptionsObject = {
           EXPECTED: { required: true, type: String }
         };
 
@@ -336,7 +336,7 @@ describe('UnifiedEnv', () => {
       const key = 'EXPECTED';
       const value = 'true';
       const parsedValue = true;
-      const envVars: EnvOptionsObject = {
+      const envVars: IEnvOptionsObject = {
         EXPECTED: { required: true, type: Boolean }
       };
 
@@ -356,7 +356,7 @@ describe('UnifiedEnv', () => {
       const value = 'true_';
       const parsedValue = true;
       const errMsg = 'the parsing error';
-      const envVars: EnvOptionsObject = {
+      const envVars: IEnvOptionsObject = {
         EXPECTED: { required: true, type: Boolean }
       };
 
@@ -393,7 +393,7 @@ describe('UnifiedEnv', () => {
         const fn = unifiedEnv['_preformTieBreaker'].bind(unifiedEnv);
         const from = 'argv';
         const key = 'KEY';
-        const expectedVariable: EnvOption = { required: true };
+        const expectedVariable: IEnvOption = { required: true };
 
         expect(fn({ expectedVariable, key, from })).toBe(false);
       });
@@ -402,7 +402,7 @@ describe('UnifiedEnv', () => {
         const fn = unifiedEnv['_preformTieBreaker'].bind(unifiedEnv);
         const from = 'argv';
         const key = 'KEY';
-        const expectedVariable: EnvOption = { required: true, tieBreaker: 'env' };
+        const expectedVariable: IEnvOption = { required: true, tieBreaker: 'env' };
 
         expect(fn({ expectedVariable, key, from })).toBe(false);
       });
@@ -413,7 +413,7 @@ describe('UnifiedEnv', () => {
         const fn = unifiedEnv['_preformTieBreaker'].bind(unifiedEnv);
         const from = 'argv';
         const key = 'KEY';
-        const expectedVariable: EnvOption = { required: true, tieBreaker: 'argv' };
+        const expectedVariable: IEnvOption = { required: true, tieBreaker: 'argv' };
 
         expect(fn({ expectedVariable, key, from })).toBe(true);
       });
@@ -422,8 +422,8 @@ describe('UnifiedEnv', () => {
 
   describe('_parseExpectedVariable()', () => {
     test('should parse correctly', () => {
-      const BOOL_VAL: EnvOption = { type: Boolean };
-      const NUM_VAL: EnvOption = { type: Number };
+      const BOOL_VAL: IEnvOption = { type: Boolean };
+      const NUM_VAL: IEnvOption = { type: Number };
       const unifiedEnv = new UnifiedEnv({ BOOL_VAL, NUM_VAL });
       const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);
       const numValue = '1234.5';
@@ -434,7 +434,7 @@ describe('UnifiedEnv', () => {
     });
 
     test('should delete any existing parsing errors', () => {
-      const NUM_VAL: EnvOption = { type: Number };
+      const NUM_VAL: IEnvOption = { type: Number };
       const unifiedEnv = new UnifiedEnv({ NUM_VAL });
       const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);
       const numValue = '1234.5';
@@ -446,9 +446,9 @@ describe('UnifiedEnv', () => {
 
     describe('should throw if parsing fails', () => {
       test('should throw an error if parsing failed', () => {
-        const BOOL_VAL: EnvOption = { type: Boolean };
-        const NUM_VAL: EnvOption = { type: Number };
-        const UNKNOWN_VAL: EnvOption = { type: Array } as any;
+        const BOOL_VAL: IEnvOption = { type: Boolean };
+        const NUM_VAL: IEnvOption = { type: Number };
+        const UNKNOWN_VAL: IEnvOption = { type: Array } as any;
 
         const unifiedEnv = new UnifiedEnv({ BOOL_VAL, NUM_VAL, UNKNOWN_VAL });
         const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);

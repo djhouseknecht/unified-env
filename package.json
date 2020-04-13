@@ -1,7 +1,7 @@
 {
   "name": "unified-env",
   "version": "0.0.0-development",
-  "description": "Unify environmental variables for node applications. Easily configure and use variables throughout your app.",
+  "description": "An lightweight, zero dependency package to unify node environment variables using strong typing",
   "main": "dist/index.js",
   "types": "dist/index.js",
   "scripts": {
@@ -55,6 +55,8 @@
     "configuration",
     "typescript",
     "node",
+    "unified",
+    "unify",
     "argv",
     "args",
     "arguments",

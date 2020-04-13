@@ -21,7 +21,7 @@ const filePath = resolve(process.cwd(), 'samples/error/.env');
 const environment = new UnifiedEnv({
   APP_VAR: true, // `true` = a required, string
   APP_BOOL: { required: true, type: Boolean }, // a required boolean
-  APP_PORT: { required: true, type: Number, acceptableValues: [2000, 3000, 4000] } // a required number of 200, 300, or 4000
+  APP_PORT: { required: true, type: Number, acceptableValues: [2000, 3000, 4000] } // a required number of 2000, 3000, or 4000
 })
   .file({ filePath }) // parse ./.env file (built the path since the `.env` file is not in the root directory)
   .generate(); // generate the env object

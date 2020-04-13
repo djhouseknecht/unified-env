@@ -1,6 +1,6 @@
-export type UnifiedEnvReturnObject<Obj extends EnvOptionsObject> = {
+export type UnifiedEnvReturnObject<Obj extends IEnvOptionsObject> = {
   [key in keyof Obj]: TypeFromConstructor<
-    Obj[key] extends EnvOption
+    Obj[key] extends IEnvOption
     ? Obj[key]['type']
     : StringConstructor
   >
@@ -10,16 +10,19 @@ export type TypeFromConstructor<T> = T extends BooleanConstructor
   ? boolean
   : T extends NumberConstructor ? number : string;
 
-export type UnifiedEnvErrorObject<Obj extends EnvOptionsObject> = { [key in keyof Obj]: string[] };
+export type UnifiedEnvErrorObject<Obj extends IEnvOptionsObject> = { [key in keyof Obj]: string[] };
 
 
 export type ValidType = StringConstructor | NumberConstructor | BooleanConstructor;
 export type LogLevel = 'log' | 'debug' | 'info' | 'warn' | 'error';
 export type TieBreakers = 'env' | 'argv' | 'file' | '__defaultValue';
 
-export type EnvOptionsObject = { [key: string]: EnvOption | true };
+export interface IEnvOptionsObject {
+  // TODO: add `false` for a non-required string
+  [key: string]: IEnvOption | true;
+};
 
-export type EnvOption = {
+export interface IEnvOption {
   required?: boolean;
   // TODO: fix this to make it type safe
   defaultValue?: string | boolean | number;
@@ -49,6 +52,8 @@ export interface ILogger {
 export interface IFileOptions {
   filePath: string;
   encoding: string;
+  // TODO: implement this
+  // failIfFileNotFound: boolean;
 };
 
 

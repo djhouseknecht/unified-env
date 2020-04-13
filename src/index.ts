@@ -1,14 +1,14 @@
 import { validateExpectedVariables, finalTypesMatch, joinArray } from './utils/utils';
 import {
   LogLevel,
-  EnvOptionsObject,
+  IEnvOptionsObject,
   UnifiedEnvReturnObject,
   IUnifiedEnvOptions,
   IFileOptions,
   IObjectOfStings,
   TieBreakers,
   UnifiedEnvErrorObject,
-  EnvOption
+  IEnvOption
 } from './utils/interfaces';
 import {
   LOG_LEVELS,
@@ -22,16 +22,16 @@ import {
 type TieBreakerParams = {
   key: string;
   from: string;
-  expectedVariable: true | EnvOption;
+  expectedVariable: true | IEnvOption;
 }
 
 type ParseVariableParams = {
   key: string;
   value: string;
-  expectedVariable: EnvOption;
+  expectedVariable: IEnvOption;
 }
 
-export class UnifiedEnv<T extends EnvOptionsObject, A> {
+export class UnifiedEnv<T extends IEnvOptionsObject, A> {
   private _expectedEnvVariables: T;
   private _returnConfig: UnifiedEnvReturnObject<T> = {} as any;
   private _errors: UnifiedEnvErrorObject<T> = {} as any;

@@ -1,12 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { IUnifiedEnvOptions, LogLevel, IFileOptions, IObjectOfStings, ILogger, EnvOption, EnvOptionsObject } from './interfaces';
+import { IUnifiedEnvOptions, LogLevel, IFileOptions, IObjectOfStings, ILogger, IEnvOption, IEnvOptionsObject } from './interfaces';
 import { UnifiedEnv } from '../index';
 
 export const LOG_LEVELS: LogLevel[] = ['log', 'debug', 'info', 'warn', 'error'];
 export const LIB_NAME = 'UnifiedEnv';
 
-export function isEnvOptionObject (option: EnvOption | boolean): option is EnvOption {
+export function isEnvOptionObject (option: IEnvOption | boolean): option is IEnvOption {
   return typeof option === 'object';
 }
 
@@ -165,7 +165,8 @@ export function parseArgv (this: UnifiedEnv<any, any>, argv: string[]): IObjectO
   return results;
 }
 
-export function validateExpectedVariables<Obj extends EnvOptionsObject> (variables: Obj): void {
+export function validateExpectedVariables<Obj extends IEnvOptionsObject> (variables: Obj): void {
+  // TODO: write this
   // throw new Error('Write this')
   // validate that the default value lines up with type
   // validate true or EvnOptionsObject
@@ -173,7 +174,7 @@ export function validateExpectedVariables<Obj extends EnvOptionsObject> (variabl
   // validate tieBreaker
 }
 
-export function finalTypesMatch (value: string | number | boolean, expectedVariable: EnvOption | true): boolean {
+export function finalTypesMatch (value: string | number | boolean, expectedVariable: IEnvOption | true): boolean {
   // TODO: write this
   return true;
 }

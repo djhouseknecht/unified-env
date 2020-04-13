@@ -24,7 +24,7 @@ const environment = new UnifiedEnv({
   ARGV_VAR: true,
   FILE_VAR: true,
   APP_BOOL: { required: true, type: Boolean }, // a required boolean
-  APP_PORT: { required: true, type: Number, acceptableValues: [2000, 3000, 4000] }, // a required number of 200, 300, or 4000
+  APP_PORT: { required: true, type: Number, acceptableValues: [2000, 3000, 4000] }, // a required number of 2000, 3000, or 4000
   APP_DEFAULT: { required: true, defaultValue: 'app default' }, // required with a defaultt value 
   TIE_VAR: { required: true, tieBreaker: 'file' } // a variable from the `.env` will _always_ override an existing variable
 })
