@@ -16,7 +16,7 @@ An lightweight, zero dependency package to unify node environment variables usin
 * [Use Cases](#use-cases)
   * [Real Life Example](#real-life-example)
   * [Heroku Deployments](#heroku-deployments)
-  * [Use a Validation Script](#use-a-validation-script
+  * [Use a Validation Script](#use-a-validation-script)
 * [Samples](#samples)
 * [Credits](#credits)
 * [Coming Soon (TODO)](#coming-soon-(todo))
@@ -129,18 +129,19 @@ Each **key** must be of the following type:
     * `acceptableValues: (string | boolean | number)[]`: The variable value must be a value found in this array. _Ensure the `defaultValue` matches the typeof the `type` option (`string` is default)_
     * `tieBreaker: 'env' | 'argv' | 'file'`: The value from the listed `tieBreaker` will always be used in the event of the same value coming from different sources. Example, `process.env` has `MY_VAR=hello` and `process.argv` has `--MY_VAR=goodbye`; if MY_VAR has a `tieBreaker = 'argv'`, the value from `process.argv` will _always_ be used -- even if `.env()` was called before `.argv()` (See [Order Matters](#order-matters) for more details). In this example, MY_VAR will equal `'goodbye'`. 
   * 2nd argument (configOptions - optional)
-    * `logLevel: 'log' | 'debug' | 'info' | 'warn' | 'error'`: (default: `'warn'`) will control what kind of logs are displayed
-    * `logger: ILogger`: (default `console`) any object that implements an `ILogger` interface
-      * ``` typescript
-        interface ILogger {
-          log (...args: any[]): void;
-          debug (...args: any[]): void;
-          info (...args: any[]): void;
-          warn (...args: any[]): void;
-          error (...args: any[]): void;
-        };
-        ```
-
+    * `Object` 
+      * `logLevel: 'log' | 'debug' | 'info' | 'warn' | 'error'`: (default: `'warn'`) will control what kind of logs are displayed
+      * `logger: ILogger`: (default `console`) any object that implements an `ILogger` interface
+        * ``` typescript
+          interface ILogger {
+            log (...args: any[]): void;
+            debug (...args: any[]): void;
+            info (...args: any[]): void;
+            warn (...args: any[]): void;
+            error (...args: any[]): void;
+          };
+          ```
+          
 ### Parsing `process.env` using `.env()`
 
 `UnifiedEnv` will check the `process.env` keys for any matching key in the `UnifiedEnv` configuration. Only keys that match will be parsed. 
