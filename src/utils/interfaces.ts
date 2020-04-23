@@ -52,8 +52,7 @@ export interface ILogger {
 export interface IFileOptions {
   filePath: string;
   encoding: string;
-  // TODO: implement this
-  // failIfFileNotFound: boolean;
+  failIfNotFound: boolean;
 };
 
 

@@ -62,7 +62,12 @@ export function parseEnvFile (this: UnifiedEnv<any, any>, fileOptions: IFileOpti
   const filePath = path.resolve(process.cwd(), fileOptions.filePath);
 
   if (!fs.existsSync(filePath)) {
-    throw new Error(`Cannot find file: ${filePath}`);
+    if (fileOptions.failIfNotFound) {
+      throw new Error(`Cannot find file: ${filePath}`);
+    } else {
+      this['_log']('warn', `${fileOptions.filePath} not found`);
+      return {};
+    }
   }
 
   const src = fs.readFileSync(filePath, { encoding: fileOptions.encoding || 'utf-8' });

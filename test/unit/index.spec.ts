@@ -111,7 +111,8 @@ describe('UnifiedEnv', () => {
       };
       const defaultFileOptions: IFileOptions = {
         filePath: '.env',
-        encoding: 'utf-8'
+        encoding: 'utf-8',
+        failIfNotFound: false
       };
 
       const loopSpy = jest.fn();
@@ -140,7 +141,8 @@ describe('UnifiedEnv', () => {
 
       const fileOptions: IFileOptions = {
         encoding: 'does-not-matter',
-        filePath: './src/whatever'
+        filePath: './src/whatever',
+        failIfNotFound: false
       }
       unifiedEnv.file(fileOptions);
       expect(parseEnvFileSpy).toHaveBeenCalledWith(fileOptions);

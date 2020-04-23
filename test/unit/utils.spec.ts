@@ -66,7 +66,7 @@ describe('Utils', () => {
 
   describe('parseEnvFile()', () => {
     test('should parse .env file', () => {
-      const results = parseEnvFile.call(unifiedEnv, { filePath: './test/unit/envs/sample.env', encoding: 'utf-8' });
+      const results = parseEnvFile.call(unifiedEnv, { filePath: './test/unit/envs/sample.env', encoding: 'utf-8', failIfNotFound: false });
       const expected = {
         ENV: 'dev',
         PORT: '3000',
@@ -79,8 +79,12 @@ describe('Utils', () => {
       expect(spy).toHaveBeenCalledTimes(2);
     });
 
-    test('should throw if file is not found', () => {
-      expect(() => parseEnvFile.call(unifiedEnv, { filePath: './i/dont/exist.env', encoding: 'utf-8' })).toThrow();
+    test('should throw if file is not found with failIfNotFound is `true`', () => {
+      expect(() => parseEnvFile.call(unifiedEnv, { filePath: './i/dont/exist.env', encoding: 'utf-8', failIfNotFound: true })).toThrow();
+    });
+
+    test('should not throw if file is not found with failIfNotFound is `false`', () => {
+      expect(() => parseEnvFile.call(unifiedEnv, { filePath: './i/dont/exist.env', encoding: 'utf-8', failIfNotFound: false })).not.toThrow();
     });
   });
 

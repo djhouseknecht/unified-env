@@ -234,6 +234,7 @@ mistake --OTHER_VALUE # { OTHER_VALUE: 'true' }
 * `Options`: optional object
   * `filePath: string`: (default: `./.env`) relative file path to the `.env` file. _Relative to the starting node script_
   * `encoding: string`: (default `'utf-8'`) file encoding
+  * `failIfNotFound: boolean`: (default `false`) if the specified env file was not found, throw an error stopping all processing
 
 
 `UnifiedEnv` follows the standard `NAME=VALUE` configuration format for `.env`. Notes about parsing: 
@@ -504,7 +505,9 @@ Be sure to check out the scripts in [package.json](package.json) and the configu
 Idea was originally designed to make [heroku](https://www.heroku.com/) development and deployments easier. It is loosely based on [dotenv](https://www.npmjs.com/package/dotenv) and [nconf](https://www.npmjs.com/package/nconf)
 
 # Coming Soon (TODO)
-* `file()` -> implement `failIfFileNotFound: boolean;`
+* create a `load()` function to push all env variables into the process.env
+  * maybe have an `exclude` list? 
+* `file()` -> add `.json` support
 * `IEnvOption` -> better typings (and validation) for `defaultValue` and `acceptableValues`
 * `utils#validateExpectedVariables()` -> write this
 * `utils#finalTypesMatch()` -> write this

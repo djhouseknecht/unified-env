@@ -78,7 +78,8 @@ export class UnifiedEnv<T extends IEnvOptionsObject, A> {
     this._log('debug', 'start: parsing env-file variables');
     const defaultFileOptions: IFileOptions = {
       filePath: '.env',
-      encoding: 'utf-8'
+      encoding: 'utf-8',
+      failIfNotFound: false
     };
     fileOptions = Object.assign(defaultFileOptions, fileOptions);
 
