@@ -507,6 +507,10 @@ Idea was originally designed to make [heroku](https://www.heroku.com/) developme
 # Coming Soon (TODO)
 * create a `load()` function to push all env variables into the process.env
   * maybe have an `exclude` list? 
+  * this will probably be an external function
+* `IEnvOption`
+  * add `false` support for non-required string
+  * add `altKeys: string[]` for alternate keys to look for
 * `file()` -> add `.json` support
 * `IEnvOption` -> better typings (and validation) for `defaultValue` and `acceptableValues`
 * `utils#validateExpectedVariables()` -> write this

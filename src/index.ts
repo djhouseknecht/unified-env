@@ -180,7 +180,7 @@ export class UnifiedEnv<T extends IEnvOptionsObject, A> {
     results: IObjectOfStings
   ): void {
     for (const key in this._expectedEnvVariables) {
-      if (this._expectedEnvVariables.hasOwnProperty(key) && results[key]) {
+      if (this._expectedEnvVariables.hasOwnProperty(key) && results[key] !== undefined) {
         this._log('debug', `found key "${key}" in ${from}`);
         this._addValueToConfig(key, results[key], from);
       }
@@ -264,13 +264,13 @@ export class UnifiedEnv<T extends IEnvOptionsObject, A> {
     return true;
   }
 
-  private _parseExpectedVariable (parseVaribleParam: ParseVariableParams): number | boolean {
-    const { expectedVariable, value, key } = parseVaribleParam;
+  private _parseExpectedVariable (parseVariableParam: ParseVariableParams): number | boolean {
+    const { expectedVariable, value, key } = parseVariableParam;
     let newValue: boolean | number;
 
     /* parse booleans */
     if (expectedVariable.type === Boolean) {
-      newValue = value === 'true'
+      newValue = (value === 'true' || value === '')
         ? true
         : value === 'false'
           ? false

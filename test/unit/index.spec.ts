@@ -446,21 +446,19 @@ describe('UnifiedEnv', () => {
       expect(unifiedEnv['_errors'].NUM_VAL).toBe(undefined);
     });
 
-    describe('should throw if parsing fails', () => {
-      test('should throw an error if parsing failed', () => {
-        const BOOL_VAL: IEnvOption = { type: Boolean };
-        const NUM_VAL: IEnvOption = { type: Number };
-        const UNKNOWN_VAL: IEnvOption = { type: Array } as any;
+    test('should throw an error if parsing failed', () => {
+      const BOOL_VAL: IEnvOption = { type: Boolean };
+      const NUM_VAL: IEnvOption = { type: Number };
+      const UNKNOWN_VAL: IEnvOption = { type: Array } as any;
 
-        const unifiedEnv = new UnifiedEnv({ BOOL_VAL, NUM_VAL, UNKNOWN_VAL });
-        const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);
-        const numValue = 'not-a-number';
-        const boolValue = 'not-a-boolean';
+      const unifiedEnv = new UnifiedEnv({ BOOL_VAL, NUM_VAL, UNKNOWN_VAL });
+      const fn = unifiedEnv['_parseExpectedVariable'].bind(unifiedEnv);
+      const numValue = 'not-a-number';
+      const boolValue = 'not-a-boolean';
 
-        expect(() => fn({ expectedVariable: BOOL_VAL, key: 'BOOL_VAL', value: boolValue })).toThrow();
-        expect(() => fn({ expectedVariable: NUM_VAL, key: 'NUM_VAL', value: numValue })).toThrow();
-        expect(() => fn({ expectedVariable: UNKNOWN_VAL, key: 'UNKNOWN_VAL', value: '' })).toThrow();
-      });
+      expect(() => fn({ expectedVariable: BOOL_VAL, key: 'BOOL_VAL', value: boolValue })).toThrow();
+      expect(() => fn({ expectedVariable: NUM_VAL, key: 'NUM_VAL', value: numValue })).toThrow();
+      expect(() => fn({ expectedVariable: UNKNOWN_VAL, key: 'UNKNOWN_VAL', value: '' })).toThrow();
     });
   });
 

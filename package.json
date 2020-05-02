@@ -12,7 +12,7 @@
     "semantic-release": "semantic-release",
     "commit": "git-cz",
     "codecov": "codecov",
-    "sample:argv": "ts-node samples/argv/argv-sample.ts --APP_VAR=app variable --APP_BOOL=false --APP_PORT=3000",
+    "sample:argv": "ts-node samples/argv/argv-sample.ts --APP_VAR=app variable --APP_BOOL=false --APP_PORT=3000 --list",
     "sample:env": "APP_VAR='app variable' APP_BOOL=false APP_PORT=3000 ts-node samples/env/env-sample.ts",
     "sample:error": "ts-node samples/error/error-sample.ts ",
     "sample:file": "ts-node samples/file/file-sample.ts"
