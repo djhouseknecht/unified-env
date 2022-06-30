@@ -21,9 +21,9 @@ An lightweight, zero dependency package to unify node environment variables usin
 * [Credits](#credits)
 * [Coming Soon (TODO)](#coming-soon-(todo))
 
-## Basic Concept 
-Unified-env aims to provide a way to ensure required, valid environment variables using TypeScript for a type-safe API. Problems it solves: 
-* **Adding new env variables locally and forgetting to add them on the server/hosting environemnt**
+## Concept 
+Unified-Env aims to provide a way to ensure required, valid environment variables using TypeScript for a type-safe API. Problems it solves: 
+* **Adding new env variables locally and forgetting to add them on the server/hosting environment**
 * **Not having required env variables set causing errors at runtime** (these can now be caught at start up or compile time)
 * **Having invalid env variables set**
 * **Not having a central API where all env variables are located and strongly typed**
